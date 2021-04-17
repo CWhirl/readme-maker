@@ -1,6 +1,9 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
-let output = "";
+const license = require('generateMarkdown');
+
+let projectInfo = '';
+let userInfo = '';
 
 // TODO: Create an array of questions for user input
 const questions = [
@@ -10,6 +13,9 @@ const questions = [
     "Enter your Usage Information",
     "Enter your project's contribution guidelines",
     "Enter your test instructions",
+    //post-license questions
+    "Enter your GitHub Username",
+    "Enter your E-Mail"
 ];
 
 // TODO: Create a function to write README file
@@ -18,7 +24,7 @@ function writeToFile(fileName, data) {
 }
 
 function getProjectInfo () {
-inquirer.prompt([
+ projectInfo = inquirer.prompt([
     {
       type: 'input',
       message: questions[0],
@@ -46,7 +52,7 @@ inquirer.prompt([
     },
     ])
     .then((response) => {
-        output = 
+        projectInfo = 
         `Project Title: ${response.title}
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         Description: ${response.description}
@@ -57,14 +63,41 @@ inquirer.prompt([
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         Testing Instructions: ${response.test}`;
 
-        return output;
+        return projectInfo;
+    });
+}
+
+function getUserInfo() {
+    userInfo = inquirer.prompt([
+        {
+            type: 'list',
+            message: 'Select your license',
+            choices: [
+                'MIT',
+                'GNU',
+            ],
+        },
+        {
+            type: 'input',
+            message: questions[5],
+            name: 'gitHub'
+        },
+        {
+            type: 'input',
+            message: questions[6],
+            name: 'eMail',
+        }
+    ])
+    .then((response) => {
+        
     });
 }
 
 // TODO: Create a function to initialize app
 function init() {
     getProjectInfo();
-    console.log(output);
+    getUserInfo();
+    
 }
 
 // Function call to initialize app
