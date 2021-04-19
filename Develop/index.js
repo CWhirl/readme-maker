@@ -1,9 +1,10 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
-const license = require('generateMarkdown');
+const fs = require('fs');
+
 
 let projectInfo = '';
-let userInfo = '';
+const filePath = 'Develop/generatedReadMe.md';
 
 // TODO: Create an array of questions for user input
 const questions = [
@@ -18,13 +19,60 @@ const questions = [
     "Enter your E-Mail"
 ];
 
+// TODO: Create a function that returns a license badge based on which license is passed in
+// If there is no license, return an empty string
+function renderLicenseBadge(license) {
+    switch(license) {
+      case 'MIT':
+        return "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)";
+      case 'GNU':
+        return "[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)";
+      case '':
+        return "";
+      default:
+        return "Unrecognized License";
+    }
+  }
+  
+  // TODO: Create a function that returns the license link
+  // If there is no license, return an empty string
+  function renderLicenseLink(license) {
+    switch(license) {
+      case 'MIT':
+        return "https://opensource.org/licenses/MIT";
+      case 'GNU':
+        return "https://www.gnu.org/licenses/gpl-3.0";
+      case '':
+        return "";
+      default:
+        return "Unrecognized License";
+    }
+  }
+  
+  // TODO: Create a function that returns the license section of README
+  // If there is no license, return an empty string
+  function renderLicenseSection(license) {
+    return renderLicenseBadge(license) + "\n" + renderLicenseLink(license);
+  }
+  
+  // TODO: Create a function to generate markdown for README
+  function generateMarkdown(data) {
+    return `${renderLicenseSection(data)}`;
+}
+  
+
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {
-
+    try {
+        const fileWriter = fs.writeFileSync(fileName, data)
+        //file written successfully
+      } catch (err) {
+        console.error(err)
+      }
 }
 
 function getProjectInfo () {
- projectInfo = inquirer.prompt([
+ inquirer.prompt([
     {
       type: 'input',
       message: questions[0],
@@ -50,6 +98,25 @@ function getProjectInfo () {
         message: questions[4],
         name: 'test',
     },
+    {
+        type: 'list',
+        message: 'Select your license',
+        name: 'license',
+        choices: [
+            'MIT',
+            'GNU',
+        ],
+    },
+    {
+        type: 'input',
+        message: questions[5],
+        name: 'gitHub'
+    },
+    {
+        type: 'input',
+        message: questions[6],
+        name: 'eMail',
+    }
     ])
     .then((response) => {
         projectInfo = 
@@ -61,42 +128,22 @@ function getProjectInfo () {
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         Contribution Instructions: ${response.contribution}
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        Testing Instructions: ${response.test}`;
+        Testing Instructions: ${response.test}
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        License: ${generateMarkdown(response.license)}
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        GitHub Profile: https://github.com/${response.gitHub}
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        E-Mail: ${response.eMail}`;
 
-        return projectInfo;
+        writeToFile(filePath, projectInfo);
     });
 }
 
-function getUserInfo() {
-    userInfo = inquirer.prompt([
-        {
-            type: 'list',
-            message: 'Select your license',
-            choices: [
-                'MIT',
-                'GNU',
-            ],
-        },
-        {
-            type: 'input',
-            message: questions[5],
-            name: 'gitHub'
-        },
-        {
-            type: 'input',
-            message: questions[6],
-            name: 'eMail',
-        }
-    ])
-    .then((response) => {
-        
-    });
-}
 
 // TODO: Create a function to initialize app
 function init() {
     getProjectInfo();
-    getUserInfo();
     
 }
 
