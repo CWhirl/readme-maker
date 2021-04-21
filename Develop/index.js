@@ -4,7 +4,7 @@ const fs = require('fs');
 
 
 let projectInfo = '';
-const filePath = 'Develop/generatedReadMe.md';
+const filePath = __dirname + '/generatedReadMe.md';
 
 // TODO: Create an array of questions for user input
 const questions = [
@@ -24,9 +24,9 @@ const questions = [
 function renderLicenseBadge(license) {
     switch(license) {
       case 'MIT':
-        return "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)";
+        return "\n[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)\n";
       case 'GNU':
-        return "[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)";
+        return "\n[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)\n";
       case '':
         return "";
       default:
@@ -52,7 +52,7 @@ function renderLicenseBadge(license) {
   // TODO: Create a function that returns the license section of README
   // If there is no license, return an empty string
   function renderLicenseSection(license) {
-    return renderLicenseBadge(license) + "\n" + renderLicenseLink(license);
+    return renderLicenseBadge(license);
   }
   
   // TODO: Create a function to generate markdown for README
@@ -120,21 +120,23 @@ function getProjectInfo () {
     ])
     .then((response) => {
         projectInfo = 
-        `Project Title: ${response.title}
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        Description: ${response.description}
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        Installation Instructions: ${response.install}
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        `Project Title: ${response.title} 
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
+        Description: ${response.description} 
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
+        Installation Instructions: ${response.install} 
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
         Contribution Instructions: ${response.contribution}
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
         Testing Instructions: ${response.test}
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        License: ${generateMarkdown(response.license)}
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
         GitHub Profile: https://github.com/${response.gitHub}
-        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        E-Mail: ${response.eMail}`;
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
+        E-Mail: ${response.eMail}
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
+        License: ${renderLicenseLink(response.license)}
+        \n
+        ${generateMarkdown(response.license)}`;
 
         writeToFile(filePath, projectInfo);
     });
