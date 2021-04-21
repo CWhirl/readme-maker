@@ -8,15 +8,15 @@ const filePath = __dirname + '/generatedReadMe.md';
 
 // TODO: Create an array of questions for user input
 const questions = [
-    "What is the title of your project?",
-    "Enter a product description",
-    "Enter the Installation Instructions",
-    "Enter your Usage Information",
-    "Enter your project's contribution guidelines",
-    "Enter your test instructions",
+    "Enter the title of your project: ",
+    "Enter a product description: ",
+    "Enter the Installation Instructions: ",
+    "Enter your Usage Information: ",
+    "Enter your project's contribution guidelines: ",
+    "Enter your test instructions: ",
     //post-license questions
-    "Enter your GitHub Username",
-    "Enter your E-Mail"
+    "Enter your GitHub Username: ",
+    "Enter your E-Mail: "
 ];
 
 // TODO: Create a function that returns a license badge based on which license is passed in
@@ -109,12 +109,12 @@ function getProjectInfo () {
     },
     {
         type: 'input',
-        message: questions[5],
+        message: questions[6],
         name: 'gitHub'
     },
     {
         type: 'input',
-        message: questions[6],
+        message: questions[7],
         name: 'eMail',
     }
     ])
